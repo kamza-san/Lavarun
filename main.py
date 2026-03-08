@@ -15,9 +15,6 @@ from online.matching import matching
 pygame.init()
 pygame.mixer.init()
 #Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함ㅇㅇ
-bgm = pygame.mixer.Sound("./eximage/bgm2.mp3")    
-bgm.set_volume(0.5)
-bgm.play(-1)
 FPS = 60
 MAX_WIDTH = 600
 MAX_HEIGHT = 800

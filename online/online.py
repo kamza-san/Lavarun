@@ -7,8 +7,8 @@ from image import button,title_photo,quit_button1,button2,quit_button2
 def online(clock,screen,FPS,MYFONT):
     host = Textbox(200,300,200,80,button,"ip",MYFONT,0,0,0,screen)
     quit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
-    matching = Button(200,420,200,80,button,"matching",MYFONT,0,0,0,screen)
-    writing = Button(200,100,200,80,button,"writing...",MYFONT,0,0,0,screen)
+    matching = Button(200,420,200,80,button,"매칭",MYFONT,0,0,0,screen)
+    writing = Button(200,100,200,80,button,"입력중...",MYFONT,0,0,0,screen)
     while True:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))

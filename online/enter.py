@@ -42,16 +42,9 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
     
     try:
         client.connect((host, port))
-    except TimeoutError:
-        print("서버에 연결할 수 없습니다. (TimeoutError 발생)")
-        pygame.quit()
-        sys.exit()
     except Exception as e:
-        print(f"서버 연결 중 오류가 발생했습니다: {e}")
         pygame.quit()
         sys.exit()
-
-    print("서버에 연결되었습니다.(Ctrl+C로 종료)")
 
     receive_thread = threading.Thread(target=receive_messages, args=(client,))
     receive_thread.daemon = True
@@ -60,8 +53,8 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
     global out
     out = True
     level = "normal"
-    start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
-    quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
+    start = Button(200,300,200,80,button,"시작",MYFONT,0,0,0,screen)
+    quit = Button(200,420,200,80,button,"나가기",MYFONT,0,0,0,screen)
     while out:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))
@@ -75,19 +68,14 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
                         try:
                             client.send("play".encode())
                         except KeyboardInterrupt:
-                            print("\n[!] 클라이언트를 종료합니다.")
                             client.close()
                             pygame.quit()
                             sys.exit()
                         start.text = "cancel"
                     elif start.text == "cancel":
                         try:
-                            print("cancel game")
                             client.send("cancel".encode())
-                            print("cancel game")
                         except KeyboardInterrupt:
-                            print("\n[!] 클라이언트를 종료합니다.")
-                            print("client QUIT!")
                             client.close()
                             pygame.quit()
                             sys.exit()
@@ -124,7 +112,6 @@ def say(type_):
         try:
             client.send(msg.encode())
         except KeyboardInterrupt:
-            print("\n[!] 클라이언트를 종료합니다.")
             client.close()
             pygame.quit()
             sys.exit()
@@ -137,7 +124,7 @@ def game_over(fight,MYFONT,screen):
     if fight == "":
         return ""
     win_lose = Button(200,300,200,80,button,"",MYFONT,0,0,0,screen)
-    ok = Button(200,420,200,80,button,"ok",MYFONT,0,0,0,screen)
+    ok = Button(200,420,200,80,button,"타이틀로",MYFONT,0,0,0,screen)
     if fight == "win":
        win_lose.text = "win"
     else:
@@ -152,7 +139,7 @@ def game_over(fight,MYFONT,screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if ok.click(pygame.mouse.get_pos()):
-                    return "online"
+                    return "title"
         for obj in objects:
             obj.draw()
         enemy.draw()

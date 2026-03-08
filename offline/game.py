@@ -39,7 +39,6 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         speed = -2
     else:
         speed = -4
-    state = 1
     out = False
     jump_sound = pygame.mixer.Sound("./eximage/jump.mp3")
     while True:
@@ -53,6 +52,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         if out:
             break
         pygame.display.update()
+        clock.tick(FPS)
     global player
     global lava
     global score
@@ -62,7 +62,6 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
-    writing = Button(200,100,200,80,button,"writing...",MYFONT,0,0,0,screen)
     scoreboard = Button(20,20,200,80,scoreimage,score,MYFONT,153,217,234,screen)
     if_jump = False
     second_jump = False
@@ -76,7 +75,6 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         screen.blit(background,(0,high+1600))
         screen.blit(background,(0,high))
         screen.blit(background,(0,high-1600))
-        clock.tick(FPS)
         if jump_speed >= -20:
             jump_speed -= 1
         for obj in objects: 
@@ -138,8 +136,8 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 dict["player"][level] = score
                 with open("./data.json","w",encoding="utf-8")as f:
                     json.dump(dict, f, ensure_ascii=False,indent=4)
-                restart = Button(200,300,200,80,button,"restart(R)",MYFONT,0,0,0,screen)
-                menu = Button(200,420,200,80,button,"menu",MYFONT,0,0,0,screen)
+            restart = Button(200,300,200,80,button,"재시작(R)",MYFONT,0,0,0,screen)
+            menu = Button(200,420,200,80,button,"타이틀로",MYFONT,0,0,0,screen)
             while True:
                 screen.blit(background,(0,high+1600))
                 screen.blit(background,(0,high))
@@ -185,3 +183,4 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         lava.draw()
         scoreboard.draw()
         pygame.display.update()
+        clock.tick(FPS)

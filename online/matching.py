@@ -32,17 +32,12 @@ def matching(clock,screen,FPS,MYFONT,host):
     
     try:
         client.connect((host, port))
-    except TimeoutError:
-        print("서버에 연결할 수 없습니다. (TimeoutError 발생)")
-        pygame.quit()
-        sys.exit()
     except Exception as e:
-        print(f"서버 연결 중 오류가 발생했습니다: {e}")
         pygame.quit()
         sys.exit()
 
-    text = Textbox(200,300,200,80,button,"matching...",MYFONT,0,0,0,screen)
-    quit = Textbox(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
+    text = Textbox(200,300,200,80,button,"매칭중...",MYFONT,0,0,0,screen)
+    quit = Textbox(200,420,200,80,button,"나가기",MYFONT,0,0,0,screen)
     global my_port
     my_port = None
     while True:    
@@ -57,7 +52,7 @@ def matching(clock,screen,FPS,MYFONT,host):
                     client.close()
                     return "online"
         if my_port != None:
-            text.text = "succeed!"
+            text.text = "성공!"
             text.draw()
             quit.draw()
             pygame.display.update()
