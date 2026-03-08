@@ -4,6 +4,6 @@
 1.server파일의 server.py를 실행한다.
 
 서버접속
-2.online버튼을 눌러 들어간다.
-3.ip칸에 server.py를 실행한 컴퓨터의 IPv4 주소를 입력한다.
+1.online버튼을 눌러 들어간다.
+2.ip칸에 server.py를 실행한 컴퓨터의 IPv4 주소를 입력한다.
 3.metchingd을 누른다.
