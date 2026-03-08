@@ -18,7 +18,8 @@ pygame.mixer.init()
 FPS = 60
 MAX_WIDTH = 600
 MAX_HEIGHT = 800
-MYFONT = pygame.font.SysFont('malgungothic', 25)
+#MYFONT = pygame.font.SysFont('malgungothic', 25)
+MYFONT = pygame.font.Font('./eximage/font.ttf', 25)
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((MAX_WIDTH,MAX_HEIGHT))

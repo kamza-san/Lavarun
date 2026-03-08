@@ -20,11 +20,11 @@ def online(clock,screen,FPS,MYFONT):
                 if quit.click(pygame.mouse.get_pos()):
                     return "title"
                 elif host.click(pygame.mouse.get_pos()):
-                    if host.text == "ip":
-                        host.text = ""
+                    host.text = ""
                     while True:
                         writing.draw()
                         host.draw()
+                        matching.draw()
                         quit.draw()
                         pygame.display.update()
                         result = host.input()

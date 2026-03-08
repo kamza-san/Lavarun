@@ -7,7 +7,7 @@ import json
 
 
 def record(clock,screen,FPS,MYFONT):
-    MYFONT1 = pygame.font.SysFont('malgungothic', 20)
+    MYFONT1 = MYFONT
     hard = Button(200,420,200,80,button,"hard:0",MYFONT1,0,0,0,screen)
     normal = Button(200,540,200,80,button,"normal:0",MYFONT1,0,0,0,screen)
     easy = Button(200,660,200,80,button,"easy:0",MYFONT1,0,0,0,screen)

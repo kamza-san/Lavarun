@@ -7,7 +7,7 @@ def generate_map(screen,now_y):
     width = 100
     height = 40
     y = now_y
-    objects.append(Object(x,y,width,height,255,255,0,screen))
+    objects.append(Object(x,y,width,height,180,180,40,screen))
 
 def touch(player,obj):
     return player.get_rect().colliderect(obj.get_rect())
