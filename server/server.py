@@ -1,40 +1,48 @@
 import socket
 import threading
 from server_son import server_son
-import time
 
 clients = []
-severs = []
+servers = []
+
 
 def handle_client(client_socket, addr):
-    global start
     print(f"[+] {addr} connected.")
+
+    buffer = ""
+
     while True:
         try:
-            msg = client_socket.recv(1024).decode()
-            print(client_socket+" | "+msg)
+            data = client_socket.recv(1024).decode()
+            if not data:
+                break
+
+            buffer += data
+
+            while "\n" in buffer:
+                msg, buffer = buffer.split("\n", 1)
+                print(str(addr) + " | " + msg)
+
         except:
             break
 
-def all_answer(msg):
-    print("server | "+msg)
-    for client in clients[:]:
-        try:
-            client.send(msg.encode())
-        except Exception as e:
-            print(f"[ERROR] send failed to {client.getpeername()}: {e}")
+    if client_socket in clients:
+        clients.remove(client_socket)
+
+    client_socket.close()
+    print(f"[-] {addr} disconnected")
+
+
+def answer(msg, client):
+    try:
+        client.send((msg + "\n").encode())
+    except:
+        if client in clients:
             clients.remove(client)
 
-def answer(msg,client):
-    print(client+" | "+msg)
-    try:
-        client.send(msg.encode())
-    except Exception as e:
-        print(f"[ERROR] send failed to {client.getpeername()}: {e}")
-        clients.remove(client)
 
 def main_server():
-    host = '0.0.0.0'
+    host = "0.0.0.0"
     port = 20000
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,17 +52,27 @@ def main_server():
     print(f"[+] Server listening on {host}:{port}")
 
     user_port = 20001
+
     while True:
         client_socket, addr = server.accept()
         clients.append(client_socket)
 
         thread = threading.Thread(target=handle_client, args=(client_socket, addr))
         thread.start()
+
         if len(clients) >= 2:
-            answer(user_port,clients[0])
-            answer(user_port,clients[1])
-            severs.append(threading.Thread(target=server_son, args=(user_port)))
+            c1 = clients.pop(0)
+            c2 = clients.pop(0)
+
+            answer("port," + str(user_port), c1)
+            answer("port," + str(user_port), c2)
+
+            t = threading.Thread(target=server_son, args=(user_port,))
+            t.start()
+            servers.append(t)
+
             user_port += 1
+
 
 if __name__ == "__main__":
     main_server()

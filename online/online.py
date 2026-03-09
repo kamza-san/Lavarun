@@ -2,10 +2,10 @@ import pygame
 import sys
 from offline.button import Button
 from offline.textbox import Textbox
-from eximage.image import button,title_photo,quit_button1,button2,quit_button2
+from eximage.image import button,title_photo,quit_button1,button2,quit_button2,ipbutton,ipbutton2
 
 def online(clock,screen,FPS,MYFONT):
-    host = Textbox(200,300,200,80,button,"ip",MYFONT,0,0,0,screen)
+    host = Textbox(180,300,240,80,ipbutton,"ip",MYFONT,0,0,0,screen)
     quit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     matching = Button(200,420,200,80,button,"매칭",MYFONT,0,0,0,screen)
     writing = Button(200,100,200,80,button,"입력중...",MYFONT,0,0,0,screen)
@@ -38,11 +38,11 @@ def online(clock,screen,FPS,MYFONT):
                             host.text += result
                 elif matching.click(pygame.mouse.get_pos()):
                     return host.text
-        host.image = button
+        host.image = ipbutton
         quit.image = quit_button1
         matching.image = button
         if host.click(pygame.mouse.get_pos()):
-            host.image = button2
+            host.image = ipbutton2
         elif quit.click(pygame.mouse.get_pos()):
             quit.image = quit_button2
         elif matching.click(pygame.mouse.get_pos()):

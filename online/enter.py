@@ -16,22 +16,40 @@ from eximage.image import scoreimage,background,player_right,player_left,button,
 def receive_messages(sock):
     global game_overing
     global map_data
+    global score
+
+    buffer = ""
+
     while True:
         try:
-            msg = sock.recv(1024).decode()
-            data = msg.split("]")[-1].strip()
-            data = list(data.split(','))
-            if data[0] == "move":
-                global score
-                enemy.x = int(data[1])
-                enemy.y = 550 + score - int(data[2])
-            elif data[0] == "start":
-                global out
-                out = False
-            elif data[0] == "win":
-                game_overing = "lose"
-            elif data[0] == "obj":
-                map_data = data
+            data = sock.recv(1024).decode()
+            if not data:
+                break
+
+            buffer += data
+
+            while "\n" in buffer:
+                msg, buffer = buffer.split("\n", 1)
+
+                data = msg.split(",")
+
+                if data[0] == "move":
+                    enemy.x = int(data[1])
+                    enemy.y = 550 + score - int(data[2])
+
+                elif data[0] == "start":
+                    global out
+                    out = False
+
+                elif data[0] == "win":
+                    game_overing = "lose"
+
+                elif data[0] == "lose":
+                    game_overing = "win"
+
+                elif data[0] == "obj":
+                    map_data = data
+
         except:
             pass
 
@@ -39,9 +57,9 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
     
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
+
     try:
-        client.connect((host, port))
+        client.connect((host, int(port)))
     except Exception as e:
         pygame.quit()
         sys.exit()
@@ -49,50 +67,17 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
     receive_thread = threading.Thread(target=receive_messages, args=(client,))
     receive_thread.daemon = True
     receive_thread.start()
-    
-    global out
-    out = True
+
+    global map_data
+    map_data = None
+
+    # map 데이터 받을 때까지 기다리기
+    while map_data is None:
+        time.sleep(0.01)
+
     level = "normal"
-    start = Button(200,300,200,80,button,"시작",MYFONT,0,0,0,screen)
-    quit = Button(200,420,200,80,button,"나가기",MYFONT,0,0,0,screen)
-    while out:    
-        clock.tick(FPS)
-        screen.blit(title_photo,(0,0))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if start.click(pygame.mouse.get_pos()):
-                    if start.text == "start":
-                        try:
-                            client.send("play".encode())
-                        except KeyboardInterrupt:
-                            client.close()
-                            pygame.quit()
-                            sys.exit()
-                        start.text = "cancel"
-                    elif start.text == "cancel":
-                        try:
-                            client.send("cancel".encode())
-                        except KeyboardInterrupt:
-                            client.close()
-                            pygame.quit()
-                            sys.exit()
-                        start.text = "start"
-                elif quit.click(pygame.mouse.get_pos()):
-                    client.close()
-                    return "online"
-        start.image = button
-        quit.image = button
-        if start.click(pygame.mouse.get_pos()):
-            start.image = button2
-        elif quit.click(pygame.mouse.get_pos()):
-            quit.image = button2
-        start.draw()
-        quit.draw()
-        pygame.display.update()
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
+
     client.close()
     return "online"
 
@@ -108,7 +93,7 @@ def say(type_):
     if type_ == "move":
         global player
         global score
-        msg = "move"+","+str(player.x)+","+str(score)
+        msg = "move,"+str(player.x)+","+str(score)+"\n"
         try:
             client.send(msg.encode())
         except KeyboardInterrupt:
@@ -185,10 +170,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     high = -800
     jump_speed = 5
     while True:
-        srv_timer += 1
-        if srv_timer >= 3:
-            say("move")
-            srv_timer = 0
+        say("move")
         right = True
         left = True
         high = high % 1600 
@@ -241,7 +223,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 break
         player.move(pressed_keys,right,left)
         if score >= 10000:
-            client.send("win".encode())
+            client.send("win\n".encode())
             game_overing = "win"
         result = game_over(game_overing,MYFONT,screen)
         if result == "":

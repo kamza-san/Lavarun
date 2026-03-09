@@ -9,14 +9,27 @@ from pygame.locals import *
 
 def receive_messages(sock):
     global my_port
+
+    buffer = ""
+
     while True:
         try:
-            msg = sock.recv(1024).decode()
-            data = msg.split("]")[-1].strip()
-            data = list(data.split(','))
-            print("[DATA]", data)
-            if data[0] == "port":
-                my_port = data[1]
+            data = sock.recv(1024).decode()
+            if not data:
+                break
+
+            buffer += data
+
+            while "\n" in buffer:
+                msg, buffer = buffer.split("\n", 1)
+
+                data = msg.split(",")
+
+                print("[DATA]", data)
+
+                if data[0] == "port":
+                    my_port = data[1]
+
         except:
             pass
 
@@ -26,16 +39,16 @@ def matching(clock,screen,FPS,MYFONT,host):
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    receive_thread = threading.Thread(target=receive_messages, args=(client,))
-    receive_thread.daemon = True
-    receive_thread.start()
-    
     try:
         client.connect((host, port))
     except Exception as e:
         pygame.quit()
         sys.exit()
-
+    
+    receive_thread = threading.Thread(target=receive_messages, args=(client,))
+    receive_thread.daemon = True
+    receive_thread.start()
+    
     text = Textbox(200,300,200,80,button,"매칭중...",MYFONT,0,0,0,screen)
     quit = Textbox(200,420,200,80,button,"나가기",MYFONT,0,0,0,screen)
     global my_port
@@ -45,6 +58,7 @@ def matching(clock,screen,FPS,MYFONT,host):
         screen.blit(title_photo,(0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                client.close()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
