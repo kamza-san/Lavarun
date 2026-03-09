@@ -91,7 +91,7 @@ def setting(clock,screen,FPS,MYFONT):
                                 out = False
                                 break 
                 elif gamequit.click(pygame.mouse.get_pos()):
-                    with open("set.json","w") as f:
+                    with open("./file/set.json","w") as f:
                         f.write('{"right":'+str(right_num)+',"left":'+str(left_num)+',"jump":'+str(jump_num)+',"fall":'+str(fall_num)+'}')
                     return "title"
         right.image = button

@@ -11,6 +11,7 @@ from online.enter import enter
 from offline.record import record
 from offline.set import setting
 from online.matching import matching
+from offline.tutorial import tutorial_screen
 
 pygame.init()
 pygame.mixer.init()
@@ -56,3 +57,5 @@ if __name__ == "__main__":
             else:
                 using_port = int(n)
                 answer = "enter"
+        elif answer == "tutorial":
+            answer = tutorial_screen(clock,screen,FPS,MYFONT)
