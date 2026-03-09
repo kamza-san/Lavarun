@@ -2,7 +2,7 @@ import pygame
 import sys
 from offline.button import Button
 from offline.textbox import Textbox
-from image import button,title_photo,quit_button1,button2,quit_button2
+from eximage.image import button,title_photo,quit_button1,button2,quit_button2
 
 def online(clock,screen,FPS,MYFONT):
     host = Textbox(200,300,200,80,button,"ip",MYFONT,0,0,0,screen)

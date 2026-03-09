@@ -1,7 +1,7 @@
 import pygame
 import sys
 from offline.button import Button
-from image import button,title_photo,quit_button1,button2,quit_button2
+from eximage.image import button,title_photo,quit_button1,button2,quit_button2
 from offline.textbox import Textbox
 import json
 
@@ -11,6 +11,7 @@ def record(clock,screen,FPS,MYFONT):
     hard = Button(200,420,200,80,button,"hard:0",MYFONT1,0,0,0,screen)
     normal = Button(200,540,200,80,button,"normal:0",MYFONT1,0,0,0,screen)
     easy = Button(200,660,200,80,button,"easy:0",MYFONT1,0,0,0,screen)
+    att = Button(200,300,200,80,button,"시도횟수:0",MYFONT1,0,0,0,screen)
     quit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     user_name = "player"
     def drawing():
@@ -18,13 +19,15 @@ def record(clock,screen,FPS,MYFONT):
         normal.draw()
         easy.draw()
         quit.draw()
+        att.draw()
         pygame.display.update()
 
-    with open("./data.json","r",encoding="utf-8")as f:
+    with open("./file/data.json","r",encoding="utf-8")as f:
         dict = json.load(f)
     hard.text = "hard:"+str(dict["player"]["hard"])
     normal.text = "normal:"+str(dict["player"]["normal"])
     easy.text = "easy:"+str(dict["player"]["easy"])
+    att.text = "시도횟수:"+str(dict["player"]["attempts"])
     while True:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))

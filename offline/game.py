@@ -10,7 +10,7 @@ from offline.textbox import Textbox
 from . import map
 import json
 from offline.map import objects
-from image import button,wait_ground,scoreimage,background,player_right,player_left,button2
+from eximage.image import button,wait_ground,scoreimage,background,player_right,player_left,button2
 from pathlib import Path
 
 
@@ -26,7 +26,7 @@ def player_gravity(a):
     score += a
 
 def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
-    with open("set.json","r") as f:
+    with open("./file/set.json","r") as f:
         data = f.read()
         data = data.replace("{","").replace("}","").replace('"',"").split(",")
         right_num = int(data[0].split(":")[1])
@@ -130,12 +130,13 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         else:
             lava.up(speed)
         if player.get_rect().colliderect(lava.get_rect()):
-            with open("./data.json","r",encoding="utf-8") as f:
+            with open("./file/data.json","r",encoding="utf-8") as f:
                 dict = json.load(f)
+            dict["player"]["attempts"] += 1
             if score > dict["player"][level]:
                 dict["player"][level] = score
-                with open("./data.json","w",encoding="utf-8")as f:
-                    json.dump(dict, f, ensure_ascii=False,indent=4)
+            with open("./file/data.json","w",encoding="utf-8")as f:
+                json.dump(dict, f, ensure_ascii=False,indent=4)
             restart = Button(200,300,200,80,button,"재시작(R)",MYFONT,0,0,0,screen)
             menu = Button(200,420,200,80,button,"타이틀로",MYFONT,0,0,0,screen)
             while True:

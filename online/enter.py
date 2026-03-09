@@ -11,7 +11,7 @@ from offline.object import Object
 from offline.button import Button
 from offline.map import generate_map,touch,touch_side,touch_near
 import json
-from image import scoreimage,background,player_right,player_left,button,title_photo,button2
+from eximage.image import scoreimage,background,player_right,player_left,button,title_photo,button2
 
 def receive_messages(sock):
     global game_overing
@@ -154,7 +154,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global objects
     objects = []
     map_gen(map_data,screen)
-    with open("set.json","r") as f:
+    with open("./file/set.json","r") as f:
         data = f.read()
         data = data.replace("{","").replace("}","").replace('"',"").split(",")
         right_num = int(data[0].split(":")[1])

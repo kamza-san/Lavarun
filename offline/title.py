@@ -3,9 +3,8 @@ import sys
 import random
 from offline.button import Button
 from offline.textbox import Textbox
-from image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2,tip
+from eximage.image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2,tip
 import threading
-tips = ["하강하면 빨리 내려감","더블 점프가능","설정에서 키 세팅 변경가능","온라인기능은 타임어택임"]
 
 def title(clock,screen,FPS,MYFONT,level):
     gamestart = Button(200,300,200,80,button,"게임시작",MYFONT,0,0,0,screen)
@@ -14,7 +13,8 @@ def title(clock,screen,FPS,MYFONT,level):
     gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     level_setting = Button(200,420,200,80,button,level,MYFONT,0,0,0,screen)
     rank = Button(200,660,200,80,button,"최고기록",MYFONT,0,0,0,screen)
-    hangul = Button(275,200,240,80,tip,"tip : %s" %tips[random.randint(0,3)],MYFONT,0,0,0,screen)
+    challenge = Button(380,120,200,80,button,"도전과제",MYFONT,0,0,0,screen)
+    hangul = Button(185,210,240,80,tip,"튜토리얼: 설정에서 조작법확인과 조작법변경을 할수있습니다",MYFONT,0,0,0,screen)
     def drawing():
         gamestart.draw()
         gameonline.draw()
@@ -22,7 +22,7 @@ def title(clock,screen,FPS,MYFONT,level):
         gamequit.draw()
         level_setting.draw()
         rank.draw()
-        hangul.draw()
+        challenge.draw()
         pygame.display.update()
     while True:    
         clock.tick(FPS)
@@ -51,6 +51,7 @@ def title(clock,screen,FPS,MYFONT,level):
         gamequit.image = quit_button1
         level_setting.image = button
         rank.image = button
+        challenge.image = button
         if gamestart.click(pygame.mouse.get_pos()):
             gamestart.image = button2
         elif gameonline.click(pygame.mouse.get_pos()):
@@ -63,4 +64,7 @@ def title(clock,screen,FPS,MYFONT,level):
             level_setting.image = button2
         elif rank.click(pygame.mouse.get_pos()):
             rank.image = button2
+        elif challenge.click(pygame.mouse.get_pos()):
+            challenge.image = button2
+        hangul.draw()
         drawing()

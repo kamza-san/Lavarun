@@ -2,10 +2,10 @@ import pygame
 import sys
 from offline.button import Button
 from offline.textbox import Textbox
-from image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2
+from eximage.image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2
 
 def setting(clock,screen,FPS,MYFONT):
-    with open("set.json","r") as f:
+    with open("./file/set.json","r") as f:
         data = f.read()
         data = data.replace("{","").replace("}","").replace('"',"").split(",")
         right_num = int(data[0].split(":")[1])
@@ -17,7 +17,7 @@ def setting(clock,screen,FPS,MYFONT):
     jump = Button(200,540,200,80,button,"점프 : "+pygame.key.name(jump_num),MYFONT,0,0,0,screen)
     fall = Button(200,660,200,80,button,"하강 : "+pygame.key.name(fall_num),MYFONT,0,0,0,screen)
     gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
-    click = Button(200,100,200,80,button,"press the key",MYFONT,0,0,0,screen)
+    click = Button(200,100,200,80,button,"키를 눌러주세요",MYFONT,0,0,0,screen)
     while True:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))
