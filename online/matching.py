@@ -3,7 +3,7 @@ import sys
 import threading
 from offline.button import Button
 from offline.textbox import Textbox
-from eximage.image import button,title_photo,button2
+from offline.image import button,title_photo,button2
 import socket
 from pygame.locals import *
 

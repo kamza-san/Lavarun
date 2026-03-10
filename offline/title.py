@@ -3,7 +3,7 @@ import sys
 import random
 from offline.button import Button
 from offline.textbox import Textbox
-from eximage.image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2,tip
+from offline.image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2,small_button,small_button2
 import threading
 
 def title(clock,screen,FPS,MYFONT,level):
@@ -11,9 +11,9 @@ def title(clock,screen,FPS,MYFONT,level):
     gameonline = Button(200,540,200,80,button,"온라인",MYFONT,0,0,0,screen)
     setting = Button(20,700,80,80,setting_button1,"",MYFONT,0,0,0,screen)
     gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
-    level_setting = Button(200,420,200,80,button,level,MYFONT,0,0,0,screen)
+    level_setting = Button(200,420,200,80,button,"난이도:"+level,MYFONT,0,0,0,screen)
     rank = Button(200,660,200,80,button,"최고기록",MYFONT,0,0,0,screen)
-    tutorial = Button(395,120,200,80,button,"튜토리얼",MYFONT,0,0,0,screen)
+    tutorial = Button(20,650,100,40,small_button,"튜토리얼",MYFONT,0,0,0,screen)
     def drawing():
         gamestart.draw()
         gameonline.draw()
@@ -52,7 +52,7 @@ def title(clock,screen,FPS,MYFONT,level):
         gamequit.image = quit_button1
         level_setting.image = button
         rank.image = button
-        tutorial.image = button
+        tutorial.image = small_button
         if gamestart.click(pygame.mouse.get_pos()):
             gamestart.image = button2
         elif gameonline.click(pygame.mouse.get_pos()):
@@ -66,5 +66,5 @@ def title(clock,screen,FPS,MYFONT,level):
         elif rank.click(pygame.mouse.get_pos()):
             rank.image = button2
         elif tutorial.click(pygame.mouse.get_pos()):
-            tutorial.image = button2
+            tutorial.image = small_button2
         drawing()

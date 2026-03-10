@@ -7,7 +7,7 @@ servers = []
 
 
 def handle_client(client_socket, addr):
-    print(f"[+] {addr} connected.")
+    print(f"[+] {addr} connected. - main")
 
     buffer = ""
 
@@ -30,7 +30,7 @@ def handle_client(client_socket, addr):
         clients.remove(client_socket)
 
     client_socket.close()
-    print(f"[-] {addr} disconnected")
+    print(f"[-] {addr} disconnected - main")
 
 
 def answer(msg, client):
@@ -50,6 +50,13 @@ def main_server():
     server.listen(5)
 
     print(f"[+] Server listening on {host}:{port}")
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    s.close()
+
+    print("your ipv4 : %s" %(str(ip)))
 
     user_port = 20001
 

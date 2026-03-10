@@ -2,7 +2,7 @@ import pygame
 import sys
 from offline.button import Button
 from offline.textbox import Textbox
-from eximage.image import tutorial,quit_button1,quit_button2
+from offline.image import tutorial,quit_button1,quit_button2
 
 def tutorial_screen(clock,screen,FPS,MYFONT):
     quit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)

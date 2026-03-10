@@ -2,10 +2,10 @@ import pygame
 import sys
 from offline.button import Button
 from offline.textbox import Textbox
-from eximage.image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2
+from offline.image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2
 
 def setting(clock,screen,FPS,MYFONT):
-    with open("./file/set.json","r") as f:
+    with open("file/set.json","r") as f:
         data = f.read()
         data = data.replace("{","").replace("}","").replace('"',"").split(",")
         right_num = int(data[0].split(":")[1])
@@ -91,7 +91,7 @@ def setting(clock,screen,FPS,MYFONT):
                                 out = False
                                 break 
                 elif gamequit.click(pygame.mouse.get_pos()):
-                    with open("./file/set.json","w") as f:
+                    with open("file/set.json","w") as f:
                         f.write('{"right":'+str(right_num)+',"left":'+str(left_num)+',"jump":'+str(jump_num)+',"fall":'+str(fall_num)+'}')
                     return "title"
         right.image = button

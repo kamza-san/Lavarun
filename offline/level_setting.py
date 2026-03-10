@@ -1,7 +1,7 @@
 import pygame
 import sys
 from offline.button import Button
-from eximage.image import button,title_photo,quit_button1,quit_button2,button2
+from offline.image import button,title_photo,quit_button1,quit_button2,button2
 
 def level_set(clock,screen,FPS,MYFONT,level):
     hard = Button(200,300,200,80,button,"hard",MYFONT,0,0,0,screen)

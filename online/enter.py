@@ -11,7 +11,7 @@ from offline.object import Object
 from offline.button import Button
 from offline.map import generate_map,touch,touch_side,touch_near
 import json
-from eximage.image import scoreimage,background,player_right,player_left,button,title_photo,button2
+from offline.image import scoreimage,background,player_right,player_left,button,title_photo,button2
 
 def receive_messages(sock):
     global game_overing
@@ -37,10 +37,6 @@ def receive_messages(sock):
                     enemy.x = int(data[1])
                     enemy.y = 550 + score - int(data[2])
 
-                elif data[0] == "start":
-                    global out
-                    out = False
-
                 elif data[0] == "win":
                     game_overing = "lose"
 
@@ -52,6 +48,31 @@ def receive_messages(sock):
 
         except:
             pass
+
+def wait(clock,screen,FPS,MYFONT):
+    
+    text = Button(200,300,200,80,button,"3",MYFONT,0,0,0,screen)
+    timing = 0
+
+    while True:    
+        clock.tick(FPS)
+        screen.blit(title_photo,(0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                client.close()
+                pygame.quit()
+                sys.exit()
+        if timing >= 50:
+            if text.text == "3":
+                text.text = "2"
+            elif text.text == "2":
+                text.text = "1"
+            else:
+                return
+            timing = 0
+        timing += 1
+        text.draw()
+        pygame.display.update()
 
 def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
     
@@ -70,13 +91,15 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
 
     global map_data
     map_data = None
+    global game_overing
+    game_overing = ""
 
-    # map 데이터 받을 때까지 기다리기
+    wait(clock,screen,FPS,MYFONT)
+
     while map_data is None:
         time.sleep(0.01)
 
-    level = "normal"
-    game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
+    game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
 
     client.close()
     return "online"
@@ -111,7 +134,7 @@ def game_over(fight,MYFONT,screen):
     win_lose = Button(200,300,200,80,button,"",MYFONT,0,0,0,screen)
     ok = Button(200,420,200,80,button,"타이틀로",MYFONT,0,0,0,screen)
     if fight == "win":
-       win_lose.text = "win"
+        win_lose.text = "win"
     else:
         win_lose.text = "lose"
     while True:
@@ -135,11 +158,11 @@ def game_over(fight,MYFONT,screen):
         pygame.display.update()
                             
 
-def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
+def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     global objects
     objects = []
     map_gen(map_data,screen)
-    with open("./file/set.json","r") as f:
+    with open("file/set.json","r") as f:
         data = f.read()
         data = data.replace("{","").replace("}","").replace('"',"").split(",")
         right_num = int(data[0].split(":")[1])
@@ -152,15 +175,8 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global enemy
     global game_overing
     global scoreboard
-    game_overing = ""
-    srv_timer = 0
+    jump_sound = pygame.mixer.Sound("./eximage/jump.mp3")
     enemy = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
-    if level == "easy":
-        speed = -1
-    elif level == "normal":
-        speed = -2
-    else:
-        speed = -4
     score = -10
     player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
@@ -201,9 +217,11 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                         jump_speed = 25
                         if_jump = False
                         second_jump = True
+                        jump_sound.play()
                     elif second_jump:
                         jump_speed = 20
                         second_jump = False
+                        jump_sound.play()
                 if event.key == down_num:
                     jump_speed = -20
         pressed_keys = pygame.key.get_pressed()

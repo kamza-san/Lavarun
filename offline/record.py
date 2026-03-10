@@ -1,7 +1,7 @@
 import pygame
 import sys
 from offline.button import Button
-from eximage.image import button,title_photo,quit_button1,button2,quit_button2
+from offline.image import button,title_photo,quit_button1,button2,quit_button2
 from offline.textbox import Textbox
 import json
 
@@ -22,7 +22,7 @@ def record(clock,screen,FPS,MYFONT):
         att.draw()
         pygame.display.update()
 
-    with open("./file/data.json","r",encoding="utf-8")as f:
+    with open("file/data.json","r",encoding="utf-8")as f:
         dict = json.load(f)
     hard.text = "hard:"+str(dict["player"]["hard"])
     normal.text = "normal:"+str(dict["player"]["normal"])

@@ -4,20 +4,20 @@ import random
 
 clients = []
 
+objs = []
+y = 600
+for i in range(100):
+    x = random.randint(12,88)*5
+    objs.append(x)
+    y -= random.randint(120,180)
+    objs.append(y)
+
+text = "obj"
+for i in range(200):
+    text += "," + str(objs[i])
+
 def handle_client(client_socket, addr):
     buffer = ""
-
-    objs = []
-    y = 600
-    for i in range(100):
-        x = random.randint(12,88)*5
-        objs.append(x)
-        y -= random.randint(120,180)
-        objs.append(y)
-
-    text = "obj"
-    for i in range(200):
-        text += "," + str(objs[i])
 
     answer(text)
 
@@ -51,6 +51,7 @@ def handle_client(client_socket, addr):
 
     broadcast("lose", client_socket)
     client_socket.close()
+    print(f"[-] {addr} disconnected")
 
 
 def broadcast(msg, sender_socket):
@@ -83,7 +84,7 @@ def server_son(port):
     while True:
         client_socket, addr = server.accept()
 
-        print("connect:", addr)
+        print(f"[+] {addr} connected.")
 
         clients.append(client_socket)
 

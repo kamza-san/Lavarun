@@ -15,16 +15,17 @@ from offline.tutorial import tutorial_screen
 
 pygame.init()
 pygame.mixer.init()
-#Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함ㅇㅇ
+
+pygame.display.set_caption('Lavarun')
+
 FPS = 60
 MAX_WIDTH = 600
 MAX_HEIGHT = 800
-#MYFONT = pygame.font.SysFont('malgungothic', 25)
-MYFONT = pygame.font.Font('./eximage/font.ttf', 25)
+MYFONT = pygame.font.Font('eximage/font.ttf', 25)
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((MAX_WIDTH,MAX_HEIGHT))
-using_host = "0.0.0.0"
+using_host = "ip"
 using_port = 0
 answer = "title"
 if __name__ == "__main__":
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         elif answer == "game":
             answer = game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
         elif answer == "online":
-            n = online(clock,screen,FPS,MYFONT)
+            n = online(clock,screen,FPS,MYFONT,using_host)
             if n == "title":
                 answer = "title"
             else:
