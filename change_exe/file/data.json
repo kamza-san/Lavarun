@@ -1,8 +1,8 @@
 {
     "player": {
         "easy": 0,
-        "normal": 0,
+        "normal": 10027,
         "hard": 0,
-        "attempts": 0
+        "attempts": 2
     }
 }

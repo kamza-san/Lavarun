@@ -60,7 +60,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global m
     score = -10
     player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
-    objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
+    objects.append(Object(0, 600, 600, 300, 180,180,40,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
     scoreboard = Button(20,20,200,80,scoreimage,score,MYFONT,153,217,234,screen)
     if_jump = False

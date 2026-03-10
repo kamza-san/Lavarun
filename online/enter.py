@@ -126,7 +126,7 @@ def say(type_):
             
 def map_gen(objs,screen):
     for i in range(100):
-        objects.append(Object(int(objs[1+i*2]), int(objs[2+i*2]), 100, 40, 255,255,0,screen))
+        objects.append(Object(int(objs[1+i*2]), int(objs[2+i*2]), 100, 40, 180,180,40,screen))
             
 def game_over(fight,MYFONT,screen):
     if fight == "":
@@ -175,11 +175,11 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     global enemy
     global game_overing
     global scoreboard
-    jump_sound = pygame.mixer.Sound("./eximage/jump.mp3")
+    jump_sound = pygame.mixer.Sound("eximage/jump.mp3")
     enemy = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     score = -10
     player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
-    objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
+    objects.append(Object(0, 600, 600, 300, 180,180,0,screen))
     scoreboard = Button(40,40,200,80,scoreimage,str(score)+"m",MYFONT,153,217,234,screen)
     if_jump = False
     second_jump = False
